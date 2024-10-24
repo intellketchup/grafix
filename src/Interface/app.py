@@ -1,4 +1,6 @@
 import wx
+import time
+import os
 
 class MyFrame(wx.Frame):
     def __init__(self, *args, **kw):
@@ -11,13 +13,49 @@ class MyFrame(wx.Frame):
         
         self.label = wx.StaticText(panel, label="Init the system")
         self.label.SetForegroundColour(wx.WHITE)
-        sizer.Add(self.label, 0, wx.ALL | wx.CENTER, 5)
+        sizer.Add(self.label, 0, wx.ALL, 10)
+
+        font = wx.Font(12, wx.FONTFAMILY_TELETYPE, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD)
+        self.label.SetFont(font)
+
+        
 
         # self.button = wx.Button(panel, label="Haz clic aquí")
         # self.button.Bind(wx.EVT_BUTTON, self.on_button_click)
         # sizer.Add(self.button, 0, wx.ALL | wx.CENTER, 5)
 
-        # panel.SetSizer(sizer)
+
+        if not os.path.exists("src/versions/"):
+            self.label2 = wx.StaticText(panel, label="ERROR: NOT FOUND FOLDER OF THE BASE CODE")
+            self.label2.SetForegroundColour(wx.WHITE)
+            sizer.Add(self.label2, 12, wx.ALL, 10)
+
+            font = wx.Font(12, wx.FONTFAMILY_TELETYPE, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD)
+            self.label2.SetFont(font)
+        else:
+            self.label3 = wx.StaticText(panel, label="FOUND THE BASE CODE FOLDER")
+            self.label3.SetForegroundColour(wx.WHITE)
+            sizer.Add(self.label3, 12, wx.ALL, 10)
+
+            font = wx.Font(12, wx.FONTFAMILY_TELETYPE, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD)
+            self.label3.SetFont(font)
+
+            carpetas = [item for item in os.listdir("src/versions/") if os.path.isdir(os.path.join("src/versions/", item))]
+
+            if carpetas:
+                for carpeta in carpetas:
+                    self.label4 = wx.StaticText(panel, label="VERSIONS:  " + carpeta)
+
+                    self.label4.SetForegroundColour(wx.WHITE)
+                    sizer.Add(self.label4, 12, wx.ALL, 10)
+
+                    font = wx.Font(12, wx.FONTFAMILY_TELETYPE, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD)
+                    self.label4.SetFont(font)
+
+        
+
+
+        panel.SetSizer(sizer)
 
         # # Hacer que la ventana ocupe toda la pantalla
         self.ShowFullScreen(True)
@@ -34,6 +72,7 @@ class MyFrame(wx.Frame):
 
     def on_button_click(self, event):
         wx.MessageBox("¡Botón presionado en wxPython!", "Notificación", wx.OK | wx.ICON_INFORMATION)
+        
 
 if __name__ == "__main__":
     app = wx.App()
